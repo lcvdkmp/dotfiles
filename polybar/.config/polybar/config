@@ -1,0 +1,384 @@
+;=====================================================
+;
+;   To learn more about how to configure Polybar
+;   go to https://github.com/jaagr/polybar
+;
+;   The README contains alot of information
+;
+;=====================================================
+
+[colors]
+; background = ${xrdb:color0:#222}
+; background-alt = #343
+; foreground = ${xrdb:color15:#222}
+; foreground = #454
+; primary = ${xrdb:color3}
+; secondary = ${xrdb:color2}
+; alert = ${xrdb:color1}
+background = #fdf5e6
+background-alt = #021
+foreground = #021
+foreground-alt = #687
+primary = ${xrdb:color3}
+secondary = ${xrdb:color2}
+muted = #bab2a6
+alert = ${xrdb:color1}
+
+[bar/custom]
+monitor = ${env:MONITOR:}
+width = 100%
+height = 20
+offset-x = 0%
+offset-y = 0%
+radius = 0.0
+fixed-center = true
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 0
+line-color = #f00
+
+border-size = 1
+border-color = ${colors.foreground}
+
+padding-left = 1
+padding-right = 1
+
+module-margin-left = 1
+module-margin-right = 2
+
+font-0 = Input Mono:pixelsize=11;2:hinting=true
+font-1 = FontAwesome:style=Regular:size=8;1
+; font-1 = Input Mono:pixelsize=11:hinting=true
+font-2 = unifont:fontformat=truetype:pixelsize=10;2
+
+modules-left = bspwm xwindow
+modules-center =
+modules-right = mpd volume memory cpu battery battery1 temperature wlan eth date
+
+;tray-transparent = true
+;tray-background = #0063ff
+tray-detached = false
+tray-padding = 2
+tray-position = right
+tray-maxsize = 15
+
+wm-restack = bspwm
+
+;override-redirect = true
+
+;scroll-up = bspwm-desknext
+;scroll-down = bspwm-deskprev
+;
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:50:...%
+
+[module/xkeyboard]
+type = internal/xkeyboard
+blacklist-0 = num lock
+
+format-prefix = " "
+format-prefix-foreground = ${colors.foreground}
+format-prefix-underline = ${colors.secondary}
+
+label-layout = %layout%
+label-layout-underline = ${colors.secondary}
+
+label-indicator-padding = 2
+label-indicator-margin = 1
+label-indicator-background = ${colors.secondary}
+label-indicator-underline = ${colors.secondary}
+
+[module/filesystem]
+type = internal/fs
+interval = 25
+
+mount-0 = /
+
+label-mounted = %mountpoint%: %{F-}%percentage_used%%
+label-mounted-foreground = ${colors.foreground}
+label-unmounted = %mountpoint% not mounted
+label-unmounted-foreground = ${colors.foreground}
+
+[module/bspwm]
+type = internal/bspwm
+
+label-focused = %index%
+label-focused-background = ${colors.background-alt}
+label-focused-foreground = ${colors.background}
+label-focused-underline= #009874
+label-focused-padding = 1
+
+label-occupied = %index%
+label-occupied-padding = 1
+
+label-urgent = %index%!
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 1
+
+label-empty = %index%
+label-empty-foreground = ${colors.foreground-alt}
+label-empty-padding = 1
+
+[module/mpd]
+type = internal/mpd
+format-online = <label-song> <icon-prev> <icon-stop> <toggle> <icon-next> <bar-progress>
+
+label-song-foreground = ${colors.foreground}
+icon-prev = 
+icon-prev-foreground = ${colors.foreground}
+icon-stop = 
+icon-stop-foreground = #009874
+icon-play = 
+icon-pause = 
+icon-next = 
+icon-next-foreground = ${colors.foreground}
+
+label-song-maxlen = 32
+label-song-ellipsis = false
+double-click-left = urxvt -e ncmpcpp
+
+label-song = %artist% - %title%
+
+bar-progress-width = 8
+bar-progress-indicator = ╼
+bar-progress-indicator-foreground = ${xrdb:color2}
+bar-progress-fill = ─
+bar-progress-fill-foreground = ${xrdb:color2}
+bar-progress-empty = ╌
+bar-progress-empty-foreground = ${colors.foreground}
+
+[module/xbacklight]
+type = internal/xbacklight
+
+format = <label> <bar>
+label = BL
+
+bar-width = 10
+bar-indicator = |
+bar-indicator-foreground = #ff
+bar-indicator-font = 2
+bar-fill = ─
+bar-fill-font = 2
+bar-fill-foreground = #9f78e1
+bar-empty = ─
+bar-empty-font = 2
+bar-empty-foreground = ${colors.foreground}
+
+[module/backlight-acpi]
+inherit = module/xbacklight
+type = internal/backlight
+card = intel_backlight
+
+[module/cpu]
+type = internal/cpu
+interval = 2
+; format-prefix = " "
+format-prefix = "cpu "
+format-prefix-foreground = ${colors.muted}
+format-underline = #009874
+label = %percentage%%
+
+[module/memory]
+type = internal/memory
+interval = 2
+; format-prefix = " "
+format-prefix = "mem "
+format-prefix-foreground = ${colors.muted}
+format-underline = #009874
+label = %percentage_used%%
+
+[module/wlan]
+type = internal/network
+interface = wlp58s0
+interval = 3.0
+
+format-connected = <ramp-signal> <label-connected>
+format-connected-underline = 009874
+label-connected = %essid%
+
+format-disconnected =
+;format-disconnected = <label-disconnected>
+;format-disconnected-underline = ${self.format-connected-underline}
+;label-disconnected = %ifname% disconnected
+;label-disconnected-foreground = ${colors.foreground}
+
+ramp-signal-0 = 
+ramp-signal-1 = 
+ramp-signal-2 = 
+ramp-signal-3 = 
+ramp-signal-4 = 
+ramp-signal-foreground = ${colors.muted}
+
+click-left = urxvt -e nmtui
+
+[module/eth]
+type = internal/network
+interface = enp0s31f6
+interval = 3.0
+
+format-connected-underline = #55aa55
+format-connected-prefix = " "
+format-connected-prefix-foreground = ${colors.muted}
+label-connected = %local_ip%
+
+format-disconnected =
+;format-disconnected = <label-disconnected>
+;format-disconnected-underline = ${self.format-connected-underline}
+;label-disconnected = %ifname% disconnected
+;label-disconnected-foreground = ${colors.foreground}
+
+[module/date]
+type = internal/date
+interval = 5
+
+date =
+date-alt = " %Y-%m-%d"
+
+time = %H:%M
+time-alt = %H:%M:%S
+
+; format-prefix = 
+format-prefix-foreground = ${colors.foreground}
+format-underline = #009874
+
+label = %date% %time%
+
+[module/volume]
+type = internal/alsa
+
+format-volume = <label-volume> <bar-volume>
+label-volume = " "
+format-volume-foreground = ${colors.muted}
+
+format-muted-prefix = " "
+format-muted-foreground = ${colors.muted}
+label-muted = muted
+
+bar-volume-width = 5
+bar-volume-foreground-0 = #009874
+bar-volume-foreground-1 = #009874
+bar-volume-foreground-2 = #009874
+bar-volume-foreground-3 = #009874
+bar-volume-foreground-4 = #009874
+bar-volume-foreground-5 = #009874
+bar-volume-foreground-6 = #009874
+bar-volume-gradient = false
+bar-volume-indicator = |
+bar-volume-indicator-font = 2
+bar-volume-fill = ─
+bar-volume-fill-font = 2
+bar-volume-empty = ─
+bar-volume-empty-font = 2
+bar-volume-empty-foreground = ${colors.foreground}
+
+[module/battery]
+type = internal/battery
+battery = BAT0
+adapter = AC
+full-at = 98
+
+format-charging = <animation-charging> <label-charging>
+format-charging-underline = #009874
+
+format-discharging = <ramp-capacity> <label-discharging>
+format-discharging-underline = ${xrdb:color3}
+
+format-full-prefix = " "
+format-full-prefix-foreground = ${colors.muted}
+format-full-underline = ${xrdb:color2}
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+ramp-capacity-foreground = ${colors.foreground}
+ramp-capacity-0-underline = ${xrdb:color1}
+
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+animation-charging-foreground = ${colors.muted}
+animation-charging-framerate = 500
+
+[module/battery1]
+inherit = module/battery
+battery = BAT1
+
+[module/temperature]
+type = internal/temperature
+thermal-zone = 0
+warn-temperature = 60
+
+format = <ramp> <label>
+format-underline = #009874
+format-warn = <ramp> <label-warn>
+format-warn-underline = ${self.format-underline}
+
+label = %temperature-c%
+label-warn = %temperature-c%
+label-warn-foreground = ${colors.secondary}
+
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+ramp-foreground = ${colors.muted}
+
+[module/powermenu]
+type = custom/menu
+
+expand-right = true
+
+format-spacing = 1
+
+label-open = 
+label-open-foreground = ${colors.secondary}
+label-close =  cancel
+label-close-foreground = ${colors.secondary}
+label-separator = |
+label-separator-foreground = ${colors.foreground}
+
+menu-0-0 = reboot
+menu-0-0-exec = menu-open-1
+menu-0-1 = power off
+menu-0-1-exec = menu-open-2
+
+menu-1-0 = cancel
+menu-1-0-exec = menu-open-0
+menu-1-1 = reboot
+menu-1-1-exec = sudo reboot
+
+menu-2-0 = power off
+menu-2-0-exec = sudo poweroff
+menu-2-1 = cancel
+menu-2-1-exec = menu-open-0
+
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+
+[global/wm]
+margin-top = 5
+margin-bottom = 0
+
+[module/github]
+type = internal/github
+
+token = ${file:~/.config/polybar/github_access.token}
+
+; Whether empty notifications should be displayed or not
+empty-notifications = false
+
+format-prefix = ": "
+format-prefix-foreground = ${colors.foreground}
+label = %notifications%
+
+; vim:ft=dosini
