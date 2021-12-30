@@ -1,0 +1,151 @@
+#
+# bspwm hotkeys
+#
+
+super + alt + Escape
+	bspc quit
+
+super + {_,shift + }q
+	bspc node -{c,k}
+
+super + m
+	bspc desktop -l next
+
+super + {t,shift + t,s,f}
+	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+
+super + ctrl + {z,s,p}
+	bspc node -g {locked,sticky,private}
+
+super + {grave,Tab}
+	bspc {node,desktop} -f last
+
+super + apostrophe
+	bspc node -s last
+
+super + {o,i}
+	bspc control --record-history off; \
+	bspc node {older,newer} -f; \
+	bspc control --record-history on
+
+super + y
+	bspc node -w last.manual
+
+super + g
+	bspc node -s biggest
+
+# focus the node in the given direction
+super + {_,shift + }{h,j,k,l}
+	bspc node -{f,s} {west,south,north,east}
+
+super + {_,shift + }c
+	bspc node -f {next,prev}
+
+# super + {comma,period}
+# 	bspc desktop -C {backward,forward}
+
+super + {comma,period}
+	bspc node -f {next,prev}.local
+
+super + bracket{left,right}
+	bspc desktop -f {prev,next}
+
+# preselect the direction
+super + ctrl + {h,j,k,l}
+	bspc node -p {west,south,north,east}
+
+# preselect the ratio
+super + ctrl + {1-9}
+	bspc node -o 0.{1-9}
+
+# cancel preselect
+super + ctrl + {_,shift + }space
+	bspc {node -p cancel,desktop -c}
+
+super + {_,shift + }{1-9,0}
+	bspc {desktop -f,node -d} ^{1-9,10}
+
+~button1
+	bspc node -f pointed
+
+#
+# move/resize
+#
+
+# expand a window by moving one of its side outward
+super + alt + {h,j,k,l}
+	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+
+# contract a window by moving one of its side inward
+super + alt + shift + {h,j,k,l}
+	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+# move a floating window
+super + {Left,Down,Up,Right}
+	bspc node -v {-20 0,0 20,0 -20,20 0}
+
+# balance tree
+super + b
+	bspc node @/ -B
+
+#
+# wm independent hotkeys
+#
+
+# Open terminal
+super + Return
+	urxvtc
+
+# Open dmenu (rofi)
+super + space
+# dmenu_run -sb '#009874' -nb '#282a2e' -nf '#c5c8c6' -fn 'Helvetica:size=10:style=regular'
+	rofi -show run window ssh
+
+# Select password
+super + p
+	rofi-pass
+
+# Add new password
+super + shift + p
+	rofi-pass --insert
+
+super + e
+	rofimoji --use-clipboard
+
+# make sxhkd reload its configuration files:
+super + Escape
+	pkill -USR1 -x sxhkd
+
+# Show help
+super + slash
+	sxhkd-help
+
+# Smart resize, will grow or shrink depending on location.
+# Will always grow for floating nodes.
+super + ctrl + alt + {Left,Down,Up,Right}
+e n=10; \
+  { d1=left;   d2=right;  dx=-$n; dy=0;   \
+  , d1=bottom; d2=top;    dx=0;   dy=$n;  \
+  , d1=top;    d2=bottom; dx=0;   dy=-$n; \
+  , d1=right;  d2=left;   dx=$n;  dy=0;   \
+  } \
+  bspc node --resize $d1 $dx $dy || bspc node --resize $d2 $dx $dy
+
+
+
+#super + F1
+#    tdrop -n 1 -ma -x 10% -w 80% -y 18 urxvtc -e ncmpcpp
+#
+#super + F2
+#    tdrop -n 2 -ma -x 10% -w 80% -y 18 urxvtc -e vifm
+#
+#super + F3
+#    tdrop -n 3 -ma -x 10% -w 80% -y 18 urxvtc -e alsamixer
+#
+#super + F4
+#    tdrop -n 4 -ma -x 10% -w 80% -y 18 urxvt -e wicd-curses
+#
+#super + F5
+#    tdrop -n 5 -ma -x 10% -w 80% -y 18 urxvt -e htop
+
+
