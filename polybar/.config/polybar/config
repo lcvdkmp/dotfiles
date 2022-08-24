@@ -55,7 +55,7 @@ font-2 = unifont:fontformat=truetype:pixelsize=10;2
 
 modules-left = bspwm xwindow
 modules-center =
-modules-right = mpd volume memory cpu battery battery1 temperature wlan eth date
+modules-right = mail mpd volume memory cpu battery battery1 temperature wlan eth date
 
 ;tray-transparent = true
 ;tray-background = #0063ff
@@ -368,6 +368,15 @@ screenchange-reload = true
 [global/wm]
 margin-top = 5
 margin-bottom = 0
+
+[module/mail]
+type = custom/script
+label = "%output%"
+label-foreground = ${colors.foreground}
+format-prefix = " "
+format-prefix-foreground = ${colors.muted}
+exec = mu find date:1w..now  flag:unread 2>/dev/null | wc -l
+interval = 5
 
 [module/github]
 type = internal/github

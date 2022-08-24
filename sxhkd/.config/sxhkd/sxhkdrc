@@ -121,4 +121,4 @@ super + alt + {h,j,k,l}
 	, d1=top;    d2=bottom; dx=0;   dy=-$n; \
 	, d1=right;  d2=left;   dx=$n;  dy=0;   \
 	} \
-	bspc node --resize $d1 $dx $dy || bspc node --resize $d2 $dx $dy
+	emacs-bspwm-integration node -z $d1 $dx $dy || emacs-bspwm-integration node -z $d2 $dx $dy
